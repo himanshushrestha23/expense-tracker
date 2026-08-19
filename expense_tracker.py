@@ -1,5 +1,26 @@
 expenses=[]
 
+
+try:
+    with open("expenses.txt","r") as file:
+        for line in file:
+                parts=line.split(":")
+                description=parts[0]
+                amount=int(parts[1])
+                category=parts[2].strip()
+                expense = {
+                    "description": description,
+                    "amount": amount,
+                    "category": category
+                    }
+                print(expense)
+                expenses.append(expense)
+                print(expenses)
+
+except FileNotFoundError:
+    pass
+
+
 def add_expense():
     description=input("Enter description: ")
     amount=int(input("Enter amount: "))
@@ -37,13 +58,29 @@ def update_expense():
     
 
 def delete_expense():
-    view_expenses()
-    delete_choice=int(input("Choose an expense to delete: "))
-    
-    index=delete_choice-1
 
-    expenses.pop(index)
-    print("Deleted Successfully!")
+        if not expenses:
+            print("There are no expenses")
+        else:
+       
+                view_expenses()
+                delete_choice=int(input("Choose an expense to delete: "))
+                
+                index=delete_choice-1
+
+                expenses.pop(index)
+                print("Deleted Successfully!")
+            
+
+    
+
+def show_total():
+    total=0
+    for expense in expenses:
+        total+=expense['amount']
+
+    print(f"Total Expense: Rs.{total}")
+    
 
 
 
@@ -55,7 +92,8 @@ Expense Tracker
   2. View Expenses
   3. Update Expense
   4. Delete Expense
-  5. Exit
+  5. Show Total
+  6. Exit
 """)
   user_input=input("Choose an option: ")
   if user_input=="1":
@@ -67,6 +105,11 @@ Expense Tracker
   elif user_input=="4":
       delete_expense()
   elif user_input=="5":
+      show_total()
+  elif user_input=="6":
+      with open("expenses.txt","w") as file:
+        for expense in expenses:
+            file.write(f"{expense['description']}:{expense['amount']}:{expense['category']}\n")
       break
   else:
       print("Invalid option")
