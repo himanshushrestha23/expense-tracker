@@ -22,39 +22,73 @@ except FileNotFoundError:
 
 
 def add_expense():
-    description=input("Enter description: ")
-    amount=int(input("Enter amount: "))
-    category=input("Enter category: ")
-    expense = {
-    "description": description,
-    "amount": amount,
-    "category": category
-    }
-    expenses.append(expense)
-    print("Added Successfully!")
+   
+            description=input("Enter description: ")
+            while True: 
+                try:
+                        amount=int(input("Enter amount: "))
+                        break
+                except ValueError:
+                            print("Invalid input, should be a number")
+            
+            category=input("Enter category: ")
+            expense = {
+            "description": description,
+            "amount": amount,
+            "category": category
+            }
+            expenses.append(expense)
+            print("Added Successfully!")
+            
 
+       
 def view_expenses():
-    count=1
-    for expense in expenses:
-        print(f"{count}.{expense['description']} - Rs.{expense['amount']} - {expense['category']} ")
-        count+=1
+    if not expenses:
+             print("There are no expenses")
+
+    else:
+        count=1
+        for expense in expenses:
+            print(f"{count}.{expense['description']} - Rs.{expense['amount']} - {expense['category']} ")
+            count+=1
 
 def update_expense():
-    view_expenses()
-    update_choice=int(input("Choose an expense to update: "))
+    if not expenses:
+         print("There are no expenses")
 
-    index=update_choice-1
+    else:
+        view_expenses()
+        
+       
+        while True: 
+            update_choice=int(input("Choose an expense to update: "))
+            if update_choice <1 or update_choice > len(expenses):
+                print("Invalid option, try again")
+                
 
-    new_description=input("Enter new description: ")
-    new_amount=int(input("Enter new amount: "))
-    new_category=input("Enter new category: ")
-    
-    selected_expense=expenses[index]
+            else:
 
-    selected_expense['description']=new_description
-    selected_expense['amount']=new_amount
-    selected_expense['category']=new_category
-    print("Updated Successfully!")
+                index=update_choice-1
+
+                new_description=input("Enter new description: ")
+
+                while True: 
+                                try:
+                                        new_amount=int(input("Enter new amount: "))
+                                        break
+                                except ValueError:
+                                            print("Invalid input, should be a number")
+                
+                new_category=input("Enter new category: ")
+                
+                selected_expense=expenses[index]
+
+                selected_expense['description']=new_description
+                selected_expense['amount']=new_amount
+                selected_expense['category']=new_category
+                print("Updated Successfully!")
+                break
+               
     
 
 def delete_expense():
@@ -62,14 +96,27 @@ def delete_expense():
         if not expenses:
             print("There are no expenses")
         else:
-       
+            
+            
                 view_expenses()
-                delete_choice=int(input("Choose an expense to delete: "))
-                
-                index=delete_choice-1
+                while True: 
+                    try:
+                        delete_choice=int(input("Choose an expense to delete: "))
+                        if delete_choice <1 or delete_choice > len(expenses):
+                            print("Invalid option, try again")
 
-                expenses.pop(index)
-                print("Deleted Successfully!")
+                        else:
+                            index=delete_choice-1
+                            expenses.pop(index)
+                            print("Deleted Successfully!")
+                            break
+
+                    except IndexError:
+                        print("Invalid option, try again")
+                
+                
+
+            
             
 
     
